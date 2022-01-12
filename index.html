@@ -5,8 +5,70 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes</title>
+    <link rel="stylesheet" href="main.css">
+    <script defer src="app.js"></script>
 </head>
 <body>
-    
+    <button id="count">Посчитать</button>
+    <div id="main-table">
+        <div class="categories">
+            <p>Name</p>
+            <p>Created</p>
+            <p>Category</p>
+            <p>Content</p>
+            <p>Dates</p>
+            <div class="main-controls-block">
+                <button id="archiveAll">Архивировать всё</button>
+                <button class="deleteAll">Удалить всё</button>
+            </div>
+        </div>
+    </div>
+    <button id="showNoteForm">Create Note</button>
+    <div id="formContainer">
+        <form action="" id="createNoteForm">
+            <input placeholder="Название записи"autocomplete="off" name="name" type="text">
+            <textarea placeholder="Контент" name="content" cols="30" rows="10"></textarea>
+            <select name="category">
+                <option label="Task" value="Task">
+                <option label="Random Thought" value="Random Thought">
+                <option label="Idea" value="Idea">
+                <option label="Quote" value="Quote">
+            </select>
+            <input id="createNote" value="Create Note" type="submit">
+            <button id="closeForm">Закрыть</button>
+        </form>
+        <form action="" id="editForm">
+            <input placeholder="Название записи"autocomplete="off" name="name" type="text">
+            <textarea placeholder="Контент" name="content" cols="30" rows="10"></textarea>
+            <select name="category">
+                <option label="Task" value="Task">
+                <option label="Random Thought" value="Random Thought">
+                <option label="Idea" value="Idea">
+                <option label="Quote" value="Quote">
+            </select>
+            <input id="editNote" value="Edit Note" type="submit">
+            <button id="closeForm">Закрыть</button>
+        </form>
+    </div>
+    <div id="archive-table">
+        <div class="categories">
+            <p>Name</p>
+            <p>Created</p>
+            <p>Category</p>
+            <p>Content</p>
+            <p>Dates</p>
+            <div class="main-controls-block">
+                <button id="desArchiveAll">Разархивировать всё</button>
+                <button class="deleteAll">Удалить всё</button>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top: 50px;" id="count-table">
+        <div class="categories">
+            <p>Category</p>
+            <p>Active</p>
+            <p>Archive</p>
+        </div>
+    </div>
 </body>
 </html>
