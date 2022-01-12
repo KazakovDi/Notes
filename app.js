@@ -1,5 +1,44 @@
-const countBtn = document.querySelector("#count")
 const countTable = document.querySelector("#count-table")
+function notesCounter() {
+    const items = countTable.querySelectorAll(".table-item")
+    items.forEach(item=> {
+        item.remove()
+    })
+    const Activeitems = MainTable.querySelectorAll(".table-item")
+    const Architems = ArchiveTable.querySelectorAll(".table-item")
+    const massActive=[]
+    const massArchive=[]
+    Activeitems.forEach(item=> {
+        const elements = [...item.childNodes]
+        const arr = elements.map(element=> element.innerHTML)
+        massActive.push(arr[2])
+    })
+    Architems.forEach(item=> {
+        const elements = [...item.childNodes]
+        const arr = elements.map(element=> element.innerHTML)
+        massArchive.push(arr[2])
+    })
+    const newSet = new Set(massActive)
+    const archiveSet = new Set(massArchive)
+    for(let item of archiveSet) {
+        newSet.add(item)
+    }
+    for(let elem of newSet) {
+        const div = document.createElement("div")
+        div.classList.add("table-item")
+        const category = document.createElement("p")
+        category.innerHTML = elem
+        div.appendChild(category)
+        const activeNotes = document.createElement("p")
+        activeNotes.innerHTML = massActive.filter(item => item === elem).length
+        div.appendChild(activeNotes)
+        const archiveNotes = document.createElement("p")
+        archiveNotes.innerHTML = massArchive.filter(item => item === elem).length
+        div.appendChild(archiveNotes)
+        countTable.appendChild(div)
+    }  
+}
+const countBtn = document.querySelector("#count")
 // variables
 const showNoteFormBtn = document.querySelector("#showNoteForm")
 const createFormContainer = document.querySelector("#formContainer")
@@ -31,12 +70,14 @@ deleteAll.forEach(btn=> {
     btn.addEventListener("click", e=> {
         const table = e.target.parentElement.parentElement.parentElement
         table.querySelectorAll(".table-item").forEach(item=> {item.remove()})
+        notesCounter()
     })
 })
 
 
 archiveAll.addEventListener("click", e=> {
     MainTable.querySelectorAll(".table-item").forEach(item=> {ArchiveTable.appendChild(item)})
+    notesCounter()
 })
 
 desArchiveAll.addEventListener("click", e=> {
@@ -87,13 +128,18 @@ createNoteForm.addEventListener("submit", e=> {
     controls.appendChild(deleteBtn)
     div.appendChild(controls)
     MainTable.appendChild(div)
+    notesCounter()
 })
 MainTable.addEventListener("click", e=> {
     const target = e.target
-    if(target.classList[0] === "delBtn")
+    if(target.classList[0] === "delBtn") {
         target.parentElement.parentElement.remove()
-    if(target.classList[0] === "archBtn")
+        notesCounter()
+    }   
+    if(target.classList[0] === "archBtn") {
         ArchiveTable.appendChild(target.parentElement.parentElement)
+        notesCounter()
+    }
     if(target.classList[0] === "editBtn") {
         const div = target.parentElement.parentElement.childNodes
         nameInputEdit.value = div[0].innerHTML
@@ -104,6 +150,7 @@ MainTable.addEventListener("click", e=> {
             div[0].innerHTML = nameInputEdit.value
             div[2].innerHTML = categoryOptionsEdit.value
             div[3].innerHTML = noteContentEdit.value
+            notesCounter()
         })
     }
 })
@@ -111,8 +158,11 @@ ArchiveTable.addEventListener("click", e=> {
     const target = e.target
     if(target.classList[0] === "delBtn")
         target.parentElement.parentElement.remove()
-    if(target.classList[0] === "archBtn")
+    if(target.classList[0] === "archBtn") {
         MainTable.appendChild(target.parentElement.parentElement)
+        notesCounter()
+    }
+        
     if(target.classList[0] === "editBtn") {
         const div = target.parentElement.parentElement.childNodes
         nameInputEdit.value = div[0].innerHTML
@@ -126,42 +176,5 @@ ArchiveTable.addEventListener("click", e=> {
         })
     }
 })
-countBtn.addEventListener("click", ()=> {
-    const Activeitems = MainTable.querySelectorAll(".table-item")
-    const Architems = ArchiveTable.querySelectorAll(".table-item")
-    const massActive=[]
-    const massArchive=[]
-    Activeitems.forEach(item=> {
-        const elements = [...item.childNodes]
-        const arr = elements.map(element=> element.innerHTML)
-        massActive.push(arr[2])
-    })
-    Architems.forEach(item=> {
-        const elements = [...item.childNodes]
-        const arr = elements.map(element=> element.innerHTML)
-        massArchive.push(arr[2])
-    })
-    const newSet = new Set(massActive)
-    const archiveSet = new Set(massArchive)
-    for(let item of archiveSet) {
-        newSet.add(item)
-    }
-    for(let elem of newSet) {
-        const div = document.createElement("div")
-        div.classList.add("table-item")
-        const category = document.createElement("p")
-        category.innerHTML = elem
-        div.appendChild(category)
-        const activeNotes = document.createElement("p")
-        activeNotes.innerHTML = massActive.filter(item => item === elem).length
-        div.appendChild(activeNotes)
-        const archiveNotes = document.createElement("p")
-        archiveNotes.innerHTML = massArchive.filter(item => item === elem).length
-        div.appendChild(archiveNotes)
-        countTable.appendChild(div)
-    }
-        
-    
-    
-    
-})
+countBtn.addEventListener("click", notesCounter)
+
