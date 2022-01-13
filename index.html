@@ -6,23 +6,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes</title>
     <link rel="stylesheet" href="main.css">
-    <script defer src="app.js"></script>
+    <script defer type="module" src="/scripts/app.js"></script>
 </head>
 <body>
-    <div id="main-table">
-        <div class="categories">
-            <p>Name</p>
-            <p>Created</p>
-            <p>Category</p>
-            <p>Content</p>
-            <p>Dates</p>
-            <div class="main-controls-block">
-                <button class="archiveAll">Архивировать всё</button>
-                <button class="deleteAll">Удалить всё</button>
+    <div class="tables">
+        <div id="main-table">
+            <div class="categories">
+                <p>Name</p>
+                <p>Created</p>
+                <p>Category</p>
+                <p>Content</p>
+                <p>Dates</p>
+                <div class="main-controls-block">
+                    <button class="archiveAll">🗂</button>
+                    <button class="deleteAll">🗑</button>
+                </div>
+            </div>
+        </div>
+        <div id="controls">
+            <button id="showNoteForm">Добавить запись</button>
+            <button id="toggleTable">Показать архив</button>
+        </div>
+        <div style="margin-top: 50px;" id="count-table">
+            <div class="categories">
+                <p>Category</p>
+                <p>Active</p>
+                <p>Archive</p>
+            </div>
+        </div>
+        <div id="archive-table">
+            <div class="categories">
+                <p>Name</p>
+                <p>Created</p>
+                <p>Category</p>
+                <p>Content</p>
+                <p>Dates</p>
+                <div class="main-controls-block">
+                    <button class="archiveAll">🗂</button>
+                    <button class="deleteAll">🗑</button>
+                </div>
             </div>
         </div>
     </div>
-    <button id="showNoteForm">Create Note</button>
     <div id="formContainer">
         <form class="form" id="createNoteForm">
             <input placeholder="Название записи"autocomplete="off" name="name" type="text">
@@ -33,7 +58,7 @@
                 <option label="Idea" value="Idea">
                 <option label="Quote" value="Quote">
             </select>
-            <input id="createNote" value="Create Note" type="submit">
+            <input id="createNote" value="Добавить" type="submit">
             <button class="closeForm">Закрыть</button>
         </form>
         <form class="form" id="editForm">
@@ -45,29 +70,9 @@
                 <option label="Idea" value="Idea">
                 <option label="Quote" value="Quote">
             </select>
-            <input id="editNote" value="Edit Note" type="submit">
+            <input id="editNote" value="Изменить" type="submit">
             <button class="closeForm">Закрыть</button>
         </form>
-    </div>
-    <div id="archive-table">
-        <div class="categories">
-            <p>Name</p>
-            <p>Created</p>
-            <p>Category</p>
-            <p>Content</p>
-            <p>Dates</p>
-            <div class="main-controls-block">
-                <button class="archiveAll" id="desArchiveAll">Разархивировать всё</button>
-                <button class="deleteAll">Удалить всё</button>
-            </div>
-        </div>
-    </div>
-    <div style="margin-top: 50px;" id="count-table">
-        <div class="categories">
-            <p>Category</p>
-            <p>Active</p>
-            <p>Archive</p>
-        </div>
     </div>
 </body>
 </html>
