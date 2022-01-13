@@ -91,11 +91,11 @@ closeForm.forEach(btn=> {
     // event listeners
 toggleTable.addEventListener("click", ()=> {
         if(ArchiveTable.classList.contains("active")) {
-            toggleTable.innerHTML = "Показать архив"
+            toggleTable.innerHTML = "Show archive"
             
             ArchiveTable.classList.remove("active")
         } else {
-            toggleTable.innerHTML = "Скрыть архив"
+            toggleTable.innerHTML = "Hide archive"
             ArchiveTable.classList.add("active")
         }
 })

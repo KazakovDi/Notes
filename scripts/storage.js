@@ -7,11 +7,11 @@ export function Dates(content) {
     return result.toString().replace(/,/g , ", ")
 }
 export const imitationArray = [
-                        ["Идея", now, "Idea", content, Dates(content)],
-                        ["Другая идея", now, "Idea", content, Dates(content)],
-                        ["Задание", now, "Task", altContent, Dates(altContent)],
-                        ["Мысль", now, "Random Thought", altContent, Dates(altContent)],
-                        ["Цитата", now, "Quote", content, Dates(content)],
-                        ["Задание 2", now, "Task", altContent, Dates(altContent)],
-                        ["Другая цитата", now, "Quote", content, Dates(content)]
+                        ["Idea", now, "Idea", content, Dates(content)],
+                        ["Another idea", now, "Idea", content, Dates(content)],
+                        ["Task1", now, "Task", altContent, Dates(altContent)],
+                        ["Thought", now, "Random Thought", altContent, Dates(altContent)],
+                        ["quote", now, "Quote", content, Dates(content)],
+                        ["Task2", now, "Task", altContent, Dates(altContent)],
+                        ["Another quote", now, "Quote", content, Dates(content)]
                        ]

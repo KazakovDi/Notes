@@ -24,8 +24,8 @@
             </div>
         </div>
         <div id="controls">
-            <button id="showNoteForm">Добавить запись</button>
-            <button id="toggleTable">Показать архив</button>
+            <button id="showNoteForm">Add note</button>
+            <button id="toggleTable">Show archive</button>
         </div>
         <div style="margin-top: 50px;" id="count-table">
             <div class="categories">
@@ -50,28 +50,28 @@
     </div>
     <div id="formContainer">
         <form class="form" id="createNoteForm">
-            <input placeholder="Название записи"autocomplete="off" name="name" type="text">
-            <textarea placeholder="Контент" name="content" cols="30" rows="10"></textarea>
+            <input required placeholder="Note name" autocomplete="off" name="name" type="text">
+            <textarea required placeholder="Content" name="content" cols="30" rows="10"></textarea>
             <select name="category">
                 <option label="Task" value="Task">
                 <option label="Random Thought" value="Random Thought">
                 <option label="Idea" value="Idea">
                 <option label="Quote" value="Quote">
             </select>
-            <input id="createNote" value="Добавить" type="submit">
-            <button class="closeForm">Закрыть</button>
+            <input id="createNote" value="Add" type="submit">
+            <button class="closeForm">Close</button>
         </form>
         <form class="form" id="editForm">
-            <input placeholder="Название записи"autocomplete="off" name="name" type="text">
-            <textarea placeholder="Контент" name="content" cols="30" rows="10"></textarea>
+            <input  placeholder="Note name"autocomplete="off" name="name" type="text">
+            <textarea placeholder="Content" name="content" cols="30" rows="10"></textarea>
             <select name="category">
                 <option label="Task" value="Task">
                 <option label="Random Thought" value="Random Thought">
                 <option label="Idea" value="Idea">
                 <option label="Quote" value="Quote">
             </select>
-            <input id="editNote" value="Изменить" type="submit">
-            <button class="closeForm">Закрыть</button>
+            <input id="editNote" value="Edit" type="submit">
+            <button class="closeForm">Close</button>
         </form>
     </div>
 </body>
