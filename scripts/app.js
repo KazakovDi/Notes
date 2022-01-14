@@ -1,20 +1,12 @@
 // import =============== 
-import {Dates, imitationArray} from "/scripts/storage.js"
+import {Dates, dataArray} from "/scripts/storage.js"
 import {notesCounter, showForm, ArchiveTable, MainTable} from "/scripts/render.js"
-
 // funcs =============== 
-export function fastCreate(parent, element, content, className) {
-    const newElement = document.createElement(element)
-    newElement.innerHTML = content
-    if(className !== undefined) {
-        newElement.classList.add(className)
-    }
-    parent.appendChild(newElement)
-} // Быстрое создание нового элемента, с присваиванием ему класса, и добавлением к родителю
-function createItem(values) {
+function showNote(values) {
     const div = document.createElement("div")
     div.classList.add("table-item")
-    values.forEach(value => {
+    div.id = MainTable.childNodes.length - 3
+    values.forEach(value=> {
         fastCreate(div, "p", value)
     })
     const controls = document.createElement("div")
@@ -25,11 +17,34 @@ function createItem(values) {
     div.appendChild(controls)
     MainTable.appendChild(div)
     notesCounter()
+}
+export function fastCreate(parent, element, content, className) {
+    const newElement = document.createElement(element)
+    if(Array.isArray(content) && content.length > 0)
+        newElement.innerHTML = content.map(item=> item.toLocaleDateString())
+    else if(Array.isArray(content) && content.length == 0)
+        newElement.innerHTML = "No dates"
+    else if(!Array.isArray(content) && typeof(content) ===  "object") 
+        newElement.innerHTML = content.toLocaleDateString()  
+    else {
+        newElement.innerHTML = content
+    }
+    if(className !== undefined)
+        newElement.classList.add(className)
+    parent.appendChild(newElement)
+} // Быстрое создание нового элемента, с присваиванием ему класса, и добавлением к родителю
+function createItem(values) {
+    const auxArray = []
+    values.forEach(value => auxArray.push(value))
+    showNote(values)
+    dataArray.push(auxArray)
+    notesCounter()
 } // Создание новых элементов таблицы
 function tableControls(e,table, oppositeTable) {
         const target = e.target.classList[0]
         const tableItem = e.target.parentElement.parentElement
         if(target === "delBtn") {
+            dataArray.splice(tableItem.id,1)
             tableItem.remove()
             notesCounter()
         }   
@@ -53,6 +68,8 @@ function tableControls(e,table, oppositeTable) {
         }
         if(target === "deleteAll") {
             table.querySelectorAll(".table-item").forEach(item=> {item.remove()})
+            dataArray.splice(0,dataArray.length)
+            console.log(dataArray)
             notesCounter()
         }
         if(target === "archiveAll") {
@@ -79,9 +96,9 @@ function tableControls(e,table, oppositeTable) {
     const closeForm = document.querySelectorAll(".closeForm")
 
 // main code =============
-imitationArray.forEach(item=> {
-    createItem(item)
-}) // Заполнение заранее подготовленными данными
+dataArray.forEach(item=> {
+        showNote(item)
+})
 closeForm.forEach(btn=> {
     btn.addEventListener("click", e=> {
         e.preventDefault()
@@ -106,7 +123,7 @@ createNoteForm.addEventListener("submit", e=> {
     e.preventDefault()
     const auxArray=[
                         nameInputCreate.value, 
-                        new Date().toLocaleDateString(),
+                        new Date(),
                         categoryOptionsCreate.value,
                         noteContentCreate.value,
                         Dates(noteContentCreate.value)
