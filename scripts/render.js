@@ -1,9 +1,8 @@
 
-
+export const countTable = document.querySelector("#count-table")
 export const MainTable = document.querySelector("#main-table")
 export const ArchiveTable = document.querySelector("#archive-table")
 
-import {dataArray, archiveArray, counterArray} from "/scripts/storage.js"
 import {fastCreate} from "/scripts/app.js"
 
 export function showForm(form) {
@@ -17,12 +16,14 @@ export function showNote(values, table) {
     values.forEach(value=> {
         fastCreate(div, "p", value)
     })
-    const controls = document.createElement("div")
-    controls.classList.add("controls")
-    fastCreate(controls, "button", "✎", "editBtn")
-    fastCreate(controls, "button", "🗂", "archBtn")
-    fastCreate(controls, "button", "🗑", "delBtn")
-    div.appendChild(controls)
+    if(table !== countTable) {
+        const controls = document.createElement("div")
+        controls.classList.add("controls")
+        fastCreate(controls, "button", "✎", "editBtn")
+        fastCreate(controls, "button", "🗂", "archBtn")
+        fastCreate(controls, "button", "🗑", "delBtn")
+        div.appendChild(controls)
+    }
     table.appendChild(div)
 }
 

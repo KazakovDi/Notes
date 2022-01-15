@@ -1,13 +1,13 @@
 // import =============== 
 import {Dates, dataArray, archiveArray, counterArray} from "/scripts/storage.js"
-import {showForm,showNote, ArchiveTable, MainTable} from "/scripts/render.js"
+import {showForm,showNote, ArchiveTable, MainTable, countTable} from "/scripts/render.js"
 // funcs =============== 
 function getUniques(data) {
     const arr = []
     data.forEach(item=>arr.push(item[2]))
     return new Set(arr)
 }
-const countTable = document.querySelector("#count-table")
+
 export function fastCreate(parent, element, content, className) {
     const newElement = document.createElement(element)
     if(Array.isArray(content) && content.length > 0)
@@ -81,7 +81,6 @@ function tableControls(e,table, oppositeTable, array, oppositeArray) {
                 auxArray.forEach((item, index)=> array[tableItem.dataset.id][index] = item)
                 notesCounter()
             })
-
         }
         if(target === "deleteAll") {
             array.splice(0,array.length)
