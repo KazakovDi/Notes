@@ -1,23 +1,13 @@
 // import =============== 
-import {Dates, dataArray} from "/scripts/storage.js"
-import {notesCounter, showForm, ArchiveTable, MainTable} from "/scripts/render.js"
+import {Dates, dataArray, archiveArray, counterArray} from "/scripts/storage.js"
+import {showForm,showNote, ArchiveTable, MainTable} from "/scripts/render.js"
 // funcs =============== 
-function showNote(values) {
-    const div = document.createElement("div")
-    div.classList.add("table-item")
-    div.id = MainTable.childNodes.length - 3
-    values.forEach(value=> {
-        fastCreate(div, "p", value)
-    })
-    const controls = document.createElement("div")
-    controls.classList.add("controls")
-    fastCreate(controls, "button", "✎", "editBtn")
-    fastCreate(controls, "button", "🗂", "archBtn")
-    fastCreate(controls, "button", "🗑", "delBtn")
-    div.appendChild(controls)
-    MainTable.appendChild(div)
-    notesCounter()
+function getUniques(data) {
+    const arr = []
+    data.forEach(item=>arr.push(item[2]))
+    return new Set(arr)
 }
+const countTable = document.querySelector("#count-table")
 export function fastCreate(parent, element, content, className) {
     const newElement = document.createElement(element)
     if(Array.isArray(content) && content.length > 0)
@@ -33,46 +23,74 @@ export function fastCreate(parent, element, content, className) {
         newElement.classList.add(className)
     parent.appendChild(newElement)
 } // Быстрое создание нового элемента, с присваиванием ему класса, и добавлением к родителю
+function notesCounter() {
+    counterArray.splice(0,counterArray.length)
+    const items = countTable.querySelectorAll(".table-item")
+    items.forEach(item=> item.remove())
+    const newSet = getUniques(dataArray)
+    const archiveSet = getUniques(archiveArray)
+    for(let item of archiveSet)
+        newSet.add(item)
+    for(let elem of newSet) {
+        const auxArray=[
+            elem, 
+            dataArray.filter(item => item[2] === elem).length,
+            archiveArray.filter(item => item[2] === elem).length,
+        ]
+        counterArray.push(auxArray)
+    }
+    counterArray.forEach(item=> showNote(item, countTable))
+}
 function createItem(values) {
     const auxArray = []
     values.forEach(value => auxArray.push(value))
-    showNote(values)
+    showNote(values, MainTable)
     dataArray.push(auxArray)
     notesCounter()
 } // Создание новых элементов таблицы
-function tableControls(e,table, oppositeTable) {
+function tableControls(e,table, oppositeTable, array, oppositeArray) {
         const target = e.target.classList[0]
         const tableItem = e.target.parentElement.parentElement
         if(target === "delBtn") {
-            dataArray.splice(tableItem.id,1)
+            array.splice(tableItem.dataset.id,1)
             tableItem.remove()
             notesCounter()
         }   
         if(target === "archBtn") {
+            oppositeArray.push(dataArray[tableItem.dataset.id])
+            array.splice(tableItem.dataset.id,1)
             oppositeTable.appendChild(tableItem)
             notesCounter()
         }
         if(target === "editBtn") {
             showForm(editForm)
+            const now = new Date
             const div = tableItem.childNodes
             nameInputEdit.value = div[0].innerHTML
             categoryOptionsEdit.value = div[2].innerHTML
             noteContentEdit.value = div[3].innerHTML
             editNoteBtn.addEventListener("click", e=> {
                 e.preventDefault()
-                div[0].innerHTML = nameInputEdit.value
-                div[2].innerHTML = categoryOptionsEdit.value
-                div[3].innerHTML = noteContentEdit.value
+                let auxArray = [nameInputEdit.value, now.toLocaleDateString(),
+                                 categoryOptionsEdit.value, noteContentEdit.value,
+                                 Dates(noteContentEdit.value).map(date=> date.toLocaleDateString())]
+
+                auxArray.forEach((item, index)=>div[index].innerHTML = item)
+                auxArray[1] = now
+                auxArray[4] = Dates(noteContentEdit.value)
+                auxArray.forEach((item, index)=> array[tableItem.dataset.id][index] = item)
                 notesCounter()
             })
+
         }
         if(target === "deleteAll") {
-            table.querySelectorAll(".table-item").forEach(item=> {item.remove()})
-            dataArray.splice(0,dataArray.length)
-            console.log(dataArray)
+            array.splice(0,array.length)
+            table.querySelectorAll(".table-item").forEach(item=> {item.remove()}) 
             notesCounter()
         }
         if(target === "archiveAll") {
+            array.forEach(item=> oppositeArray.push(item))
+            array.splice(0,dataArray.length)
             table.querySelectorAll(".table-item").forEach(item=> {oppositeTable.appendChild(item)})
             notesCounter()
         }
@@ -81,6 +99,7 @@ function tableControls(e,table, oppositeTable) {
 // variables ===============
 
     const toggleTable = document.querySelector("#toggleTable")
+
 
     const createNoteForm = document.querySelector("#createNoteForm")
     const editForm = document.querySelector("#editForm")
@@ -96,9 +115,9 @@ function tableControls(e,table, oppositeTable) {
     const closeForm = document.querySelectorAll(".closeForm")
 
 // main code =============
-dataArray.forEach(item=> {
-        showNote(item)
-})
+dataArray.forEach(item=> showNote(item, MainTable))
+archiveArray.forEach(item=> showNote(item, ArchiveTable))
+notesCounter()
 closeForm.forEach(btn=> {
     btn.addEventListener("click", e=> {
         e.preventDefault()
@@ -109,7 +128,6 @@ closeForm.forEach(btn=> {
 toggleTable.addEventListener("click", ()=> {
         if(ArchiveTable.classList.contains("active")) {
             toggleTable.innerHTML = "Show archive"
-            
             ArchiveTable.classList.remove("active")
         } else {
             toggleTable.innerHTML = "Hide archive"
@@ -130,5 +148,5 @@ createNoteForm.addEventListener("submit", e=> {
                     ]
     createItem(auxArray)
 })
-MainTable.addEventListener("click", e=> tableControls(e, MainTable, ArchiveTable))
-ArchiveTable.addEventListener("click", e=> tableControls(e, ArchiveTable, MainTable))
+MainTable.addEventListener("click", e=> tableControls(e, MainTable, ArchiveTable, dataArray, archiveArray))
+ArchiveTable.addEventListener("click", e=> tableControls(e, ArchiveTable, MainTable, archiveArray, dataArray))

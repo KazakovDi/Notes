@@ -11,7 +11,7 @@ export function Dates(content) {
     })
     return Array.from(dates)
 }
-export const dataArray = [
+export let dataArray = [
                         ["Idea", now, "Idea", content, Dates(content)],
                         ["Another idea", now, "Idea", content, Dates("Текст без дат")],
                         ["Task1", now, "Task", altContent, Dates(altContent)],
@@ -20,3 +20,8 @@ export const dataArray = [
                         ["Task2", now, "Task", altContent, Dates(altContent)],
                         ["Another quote", now, "Quote", content, Dates(content)]
                        ]
+export let archiveArray = [
+                           ["Archive Idead", now, "Idea", content, Dates(content)],
+                           ["Archive Task", now, "Task", content, Dates("Текст без дат")]
+                        ]
+export let counterArray = []
